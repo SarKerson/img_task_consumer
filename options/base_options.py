@@ -22,9 +22,9 @@ class BaseOptions:
     def initialize(self, parser):
         """Define the common options that are used in both training and test."""
         # basic parameters
-        parser.add_argument('--dataroot', required=True,
+        parser.add_argument('--dataroot', required=False,
                             help='path to images (should have subfolders trainA, trainB, valA, valB, train, val, etc)')
-        parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+        parser.add_argument('--gpu_ids', type=str, default='-1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         parser.add_argument('--seed', type=int, default=233, help='random seed')
 
         # model parameters

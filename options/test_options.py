@@ -13,11 +13,11 @@ class TestOptions(BaseOptions):
 
     def initialize(self, parser):
         parser = BaseOptions.initialize(self, parser)  # define shared options
-        parser.add_argument('--results_dir', type=str, default=None, required=True, help='saves results here.')
+        parser.add_argument('--results_dir', type=str, default=None, required=False, help='saves results here.')
         parser.add_argument('--need_profile', action='store_true')
         parser.add_argument('--num_test', type=int, default=float('inf'), help='how many test images to run')
         parser.add_argument('--model', type=str, default='test', help='which model do you want test')
-        parser.add_argument('--restore_G_path', type=str, required=True, help='the path to restore the generator')
+        parser.add_argument('--restore_G_path', type=str, required=False, help='the path to restore the generator')
         parser.add_argument('--netG', type=str, default='sub_mobile_resnet_9blocks',
                             choices=['resnet_9blocks',
                                      'mobile_resnet_9blocks',

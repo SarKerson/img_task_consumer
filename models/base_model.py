@@ -87,6 +87,9 @@ class BaseModel(ABC):
         """
         if self.isTrain:
             self.schedulers = [networks.get_scheduler(optimizer, opt) for optimizer in self.optimizers]
+        # 用已经定义好的 net 结构
+        # 指定的 weight 的路径
+        # 将 weight load 到 net 里面
         self.load_networks(verbose=verbose)
         if verbose:
             self.print_networks()

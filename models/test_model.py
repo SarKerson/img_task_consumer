@@ -24,7 +24,7 @@ class TestModel(BaseModel):
     def set_input(self, input):
         AtoB = self.opt.direction == 'AtoB'
         self.real_A = input['A' if AtoB else 'B'].to(self.device)
-        if self.opt.dataset_mode != 'single':
+        if self.opt.dataset_mode not in ['single', 'url']:
             self.real_B = input['B' if AtoB else 'A'].to(self.device)
         self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
