@@ -66,7 +66,10 @@ class TaskMeta(object):
 
     @classmethod
     def from_redis(cls, task_id):
-        return cls.from_str(rc.get(cls.KEY % task_id))
+        try:
+            return cls.from_str(rc.get(cls.KEY % task_id))
+        except Exception as why:
+            return None
 
     def to_dict(self):
         return self.__dict__
@@ -75,7 +78,11 @@ class TaskMeta(object):
         return json.dumps(self.to_dict())
 
     def update(self):
-        rc.set(self.KEY % self.task_id, self.to_json())
+        try:
+            rc.set(self.KEY % self.task_id, self.to_json())
+            return True
+        except Exception as why:
+            return False
 
 
 def upload_img(task_id, img):
@@ -83,25 +90,39 @@ def upload_img(task_id, img):
         obj_name = '%s_res' % task_id
         b = io.BytesIO()
         img.save(b, 'PNG')
-        bucket.blob(obj_name).upload_from_file(b)
+        bucket.blob(obj_name).upload_from_string(b.getvalue())
         return obj_name
     except:
         return None
 
 
+ERR_READ_REDIS_FAILED = 1
+ERR_WRITE_REDIS_FAILED = 2
+ERR_WRITE_CLOUD_STORAGE_FAILED = 3
+SUC = 0
+
+
 def process(task_id):
+    # get meta info
     meta = TaskMeta.from_redis(task_id)
+    if not meta:
+        return ERR_READ_REDIS_FAILED
+
     # inference
     result_img = inference(meta.input_url)
+
     # upload result
     obj_name = upload_img(meta.task_id, result_img)
     if not obj_name:
-        return 1
+        return ERR_WRITE_CLOUD_STORAGE_FAILED
     output_url = URL % obj_name
-    # update meta
+
+    # update meta info
     meta.output_url = output_url
     meta.proc_status = TaskMeta.TASK_STATUS_SUC
-    meta.update()
+    if not meta.update():
+        return ERR_WRITE_REDIS_FAILED
+    return SUC
 
 
 def run():
