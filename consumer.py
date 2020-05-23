@@ -15,7 +15,7 @@ BUCKET_NAME = 'ylq_server'
 URL = 'https://storage.googleapis.com/ylq_server/%s'
 
 # redis
-rc = redis.Redis(host=HOST, port=6380, db=0)
+rc = redis.Redis(host=HOST, port=6382, db=0)
 # kafka
 consumer = KafkaConsumer(
     'gan',
