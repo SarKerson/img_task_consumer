@@ -2,7 +2,7 @@ import json
 import io
 import redis
 import logging
-
+import time
 
 from kafka import KafkaConsumer
 from google.cloud import storage
