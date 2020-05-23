@@ -10,12 +10,12 @@ from google.cloud import storage
 from test import inference
 
 
-HOST = '35.240.132.243'
+HOST = '127.0.0.1'
 BUCKET_NAME = 'ylq_server'
 URL = 'https://storage.googleapis.com/ylq_server/%s'
 
 # redis
-rc = redis.Redis(host=HOST, port=6379, db=0)
+rc = redis.Redis(host=HOST, port=6380, db=0)
 # kafka
 consumer = KafkaConsumer(
     'gan',
