@@ -147,10 +147,12 @@ def process(task_id):
 
 def run():
     for msg in consumer:
-        if msg.key != 'commit':
+        logging.info('[run] get msg: %s', msg)
+        key = str(msg.key)
+        val = str(msg.value)
+        if key != 'commit':
             continue
-        logging.info('[run] msg: %s', msg.value)
-        r = process(msg.value)
+        r = process(value)
         logging.info('[run] done msg: %s', r)
 
 
@@ -167,4 +169,4 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
+    run()
