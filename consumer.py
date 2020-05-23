@@ -82,6 +82,7 @@ class TaskMeta(object):
         try:
             return cls.from_str(rc.get(cls.KEY % task_id))
         except Exception as why:
+            logging.exception(why)
             return None
 
     def to_dict(self):
@@ -95,6 +96,7 @@ class TaskMeta(object):
             rc.set(self.KEY % self.task_id, self.to_json())
             return True
         except Exception as why:
+            logging.exception(why)
             return False
 
 
@@ -105,7 +107,8 @@ def upload_img(task_id, img):
         img.save(b, 'PNG')
         bucket.blob(obj_name).upload_from_string(b.getvalue())
         return obj_name
-    except:
+    except Exception as why:
+        logging.exception(why)
         return None
 
 
@@ -151,6 +154,7 @@ def run():
         key = str(msg.key)
         val = str(msg.value)
         if key != 'commit':
+            logging.info('[run] invalid key: %s, continue...', key)
             continue
         r = process(value)
         logging.info('[run] done msg: %s', r)
