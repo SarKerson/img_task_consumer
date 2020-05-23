@@ -167,4 +167,4 @@ def test():
     result_img.save('/tmp/res', 'JPEG')
 
 if __name__ == '__main__':
-    run()
+    test()
