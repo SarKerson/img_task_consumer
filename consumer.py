@@ -156,21 +156,15 @@ def run():
         if key != 'commit':
             logging.info('[run] invalid key: %s, continue...', key)
             continue
-        r = process(value)
+        r = process(val)
         logging.info('[run] done msg: %s', r)
 
 
 def test():
-    input_url = 'https://storage.googleapis.com/ylq_server/2a391a22368eeabbcfdd7771e99a8ca3'
-    task_id = '2a391a22368eeabbcfdd7771e99a8ca3'
+    input_url = 'https://storage.googleapis.com/ylq_server/208e8322d7ecd9f48c969be0c95b333e'
     result_img = inference(input_url)
     # upload result
-    obj_name = upload_img(task_id, result_img)
-    if not obj_name:
-        return 1
-    output_url = URL % obj_name
-    print(output_url)
-
+    result_img.save('/tmp/res', 'JPEG')
 
 if __name__ == '__main__':
     run()
