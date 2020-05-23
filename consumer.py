@@ -151,8 +151,8 @@ def process(task_id):
 def run():
     for msg in consumer:
         logging.info('[run] get msg: %s', msg)
-        key = str(msg.key)
-        val = str(msg.value)
+        key = msg.key.decode()
+        val = msg.value.decode()
         if key != 'commit':
             logging.info('[run] invalid key: %s, continue...', key)
             continue
